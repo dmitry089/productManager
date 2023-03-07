@@ -1,7 +1,6 @@
 package ru.netology.productManager;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ProductRepositoryTest {
@@ -49,6 +48,26 @@ public class ProductRepositoryTest {
         Product[] expected = {};
         Product[] actual = repository.findAll();
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldThrowException() {
+        repository.save(book1);
+        repository.save(book2);
+        repository.save(book3);
+        Assertions.assertThrows(NotFoundIdException.class, () -> {
+            repository.removeById(666);
+        });
+    }
+    @Test
+    public void shouldNotThrowException () {
+        repository.save(book1);
+        repository.save(book2);
+        repository.save(book3);
+        repository.removeById(2);
+        Product[] expected = new Product[]{book1,book3};
+        Product[] actual = repository.findAll();
+        Assertions.assertArrayEquals(expected,actual);
     }
 }
 

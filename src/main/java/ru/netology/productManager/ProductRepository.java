@@ -18,6 +18,9 @@ public class ProductRepository {
     }
 
     public void removeById(int id) {
+        if (findById(id) == null) {
+            throw new NotFoundIdException("Element with id: " + id + " not found");
+        }
         Product[] tmp = new Product[items.length - 1];
         int copyToIndex = 0;
         for (Product product : items) {
@@ -27,5 +30,13 @@ public class ProductRepository {
             }
         }
         items = tmp;
+    }
+    public Product findById(int id) {
+        for (Product product : items) {
+            if (product.getId() == id) {
+                return product;
+            }
+        }
+        return null;
     }
 }
